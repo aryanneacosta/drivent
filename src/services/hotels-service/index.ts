@@ -10,7 +10,9 @@ async function validateGetHotels(userId: number) {
 
     const ticket =  await ticketRepository.findTicketByEnrollmentId(enrollment.id);
 
-    if (!ticket || ticket.status === 'RESERVED' || ticket.TicketType.isRemote === true || ticket.TicketType.includesHotel === false) {
+    if (!ticket) throw notFoundError();
+
+    if (ticket.status === 'RESERVED' || ticket.TicketType.isRemote === true || ticket.TicketType.includesHotel === false) {
         throw cannotGetHotelsError();
     }
 }
