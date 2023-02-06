@@ -13,13 +13,17 @@ export async function getHotels(req: AuthenticatedRequest, res: Response) {
         if (error.name === 'cannotGetHotelsError') {
             return res.sendStatus(httpStatus.PAYMENT_REQUIRED);
         }
-        return res.sendStatus(httpStatus.NOT_FOUND)
+        return res.sendStatus(httpStatus.NOT_FOUND);
     }
 }
 
 export async function getHotelsRooms(req: AuthenticatedRequest, res: Response) {
     const { userId } = req;
     const { hotelId } = req.params;
+
+    if(!hotelId || isNaN(Number(hotelId))) {
+        return res.sendStatus(httpStatus.NOT_FOUND);
+    }
 
     try {
         const rooms = await hotelsService.getHotelsRooms(Number(userId), Number(hotelId));
@@ -28,6 +32,6 @@ export async function getHotelsRooms(req: AuthenticatedRequest, res: Response) {
         if (error.name === 'cannotGetHotelsError') {
             return res.sendStatus(httpStatus.PAYMENT_REQUIRED);
         }
-        return res.sendStatus(httpStatus.NOT_FOUND)
+        return res.sendStatus(httpStatus.NOT_FOUND);
     }
 }
